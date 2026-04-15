@@ -1,0 +1,894 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>캠핏 체험 — 캠핑장 안내 통합 자료</title>
+<style>
+  * { box-sizing: border-box; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Apple SD Gothic Neo',
+                 'Malgun Gothic', 'Noto Sans KR', sans-serif;
+    line-height: 1.7;
+    color: #222;
+    background: #f7f7f8;
+    margin: 0;
+    padding: 0;
+  }
+  .container {
+    max-width: 820px;
+    margin: 0 auto;
+    background: #fff;
+    padding: 48px 40px;
+    box-shadow: 0 0 24px rgba(0,0,0,0.05);
+  }
+  header {
+    border-bottom: 3px solid #2c7a3e;
+    padding-bottom: 20px;
+    margin-bottom: 32px;
+  }
+  header h1 {
+    margin: 0 0 8px 0;
+    font-size: 26px;
+    color: #2c7a3e;
+  }
+  header .meta {
+    font-size: 13px;
+    color: #888;
+  }
+  h2 {
+    background: #2c7a3e;
+    color: #fff;
+    padding: 12px 18px;
+    border-radius: 6px;
+    font-size: 19px;
+    margin-top: 48px;
+    margin-bottom: 24px;
+  }
+  h3 {
+    color: #2c7a3e;
+    border-left: 4px solid #2c7a3e;
+    padding-left: 12px;
+    margin-top: 32px;
+    font-size: 17px;
+  }
+  h4 {
+    color: #444;
+    font-size: 15px;
+    margin-top: 24px;
+    margin-bottom: 8px;
+  }
+  .script-block {
+    background: #f0f7f2;
+    border-left: 4px solid #2c7a3e;
+    padding: 14px 18px;
+    margin: 12px 0;
+    border-radius: 4px;
+    white-space: pre-line;
+    font-size: 15px;
+  }
+  .checklist {
+    list-style: none;
+    padding: 0;
+  }
+  .checklist li {
+    padding: 10px 14px;
+    margin: 8px 0;
+    background: #fafafa;
+    border: 1px solid #e3e3e3;
+    border-radius: 4px;
+  }
+  .checklist li::before {
+    content: "☐ ";
+    color: #2c7a3e;
+    font-weight: bold;
+    margin-right: 6px;
+  }
+  .qa {
+    margin: 18px 0;
+    padding: 14px 18px;
+    border-bottom: 1px solid #eee;
+  }
+  .qa .q {
+    font-weight: 600;
+    color: #2c7a3e;
+    margin-bottom: 6px;
+  }
+  .qa .a {
+    color: #333;
+    padding-left: 6px;
+    white-space: pre-line;
+  }
+  .badge {
+    display: inline-block;
+    background: #ffeaa7;
+    color: #856404;
+    padding: 2px 8px;
+    border-radius: 3px;
+    font-size: 12px;
+    margin-left: 6px;
+    vertical-align: middle;
+  }
+  .badge-no {
+    background: #ffd6d6;
+    color: #c0392b;
+  }
+  strong { color: #c0392b; }
+  .escalation {
+    background: #fff8e1;
+    border: 1px solid #ffd54f;
+    border-radius: 6px;
+    padding: 18px 22px;
+    margin: 14px 0;
+  }
+  .escalation ol { padding-left: 20px; margin: 8px 0; }
+  .nogo {
+    background: #fdecea;
+    border: 1px solid #f5b7b1;
+    border-radius: 6px;
+    padding: 18px 22px;
+    margin: 14px 0;
+  }
+  .nogo h4 { margin-top: 0; color: #c0392b; }
+  .nogo ul { padding-left: 20px; margin: 8px 0; }
+  nav.toc {
+    background: #f0f7f2;
+    border-radius: 6px;
+    padding: 16px 22px;
+    margin-bottom: 32px;
+  }
+  nav.toc strong { color: #2c7a3e; }
+  nav.toc ul { margin: 8px 0 0 0; padding-left: 20px; }
+  nav.toc a { color: #2c7a3e; text-decoration: none; }
+  nav.toc a:hover { text-decoration: underline; }
+  footer {
+    margin-top: 48px;
+    padding-top: 20px;
+    border-top: 1px solid #eee;
+    font-size: 13px;
+    color: #888;
+    text-align: center;
+  }
+  @media print {
+    body { background: #fff; }
+    .container { box-shadow: none; padding: 20px; }
+    h2 { background: #fff; color: #2c7a3e; border: 2px solid #2c7a3e; }
+  }
+  @media (max-width: 600px) {
+    .container { padding: 24px 18px; }
+    header h1 { font-size: 21px; }
+    h2 { font-size: 17px; }
+  }
+
+  /* === Tab navigation === */
+  .tabs {
+    display: flex;
+    border-bottom: 2px solid #e3e3e3;
+    margin-bottom: 32px;
+    gap: 4px;
+  }
+  .tabs button {
+    background: none;
+    border: none;
+    padding: 12px 22px;
+    font-size: 15px;
+    font-weight: 600;
+    color: #888;
+    cursor: pointer;
+    border-bottom: 3px solid transparent;
+    margin-bottom: -2px;
+    font-family: inherit;
+  }
+  .tabs button.active {
+    color: #2c7a3e;
+    border-bottom-color: #2c7a3e;
+  }
+  .tab-pane { display: none; }
+  .tab-pane.active { display: block; }
+
+  body.wide-mode .container { max-width: 1400px; }
+
+  /* === Status table === */
+  .status-toolbar {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 16px;
+    flex-wrap: wrap;
+  }
+  .status-toolbar button {
+    background: #2c7a3e;
+    color: #fff;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+    font-family: inherit;
+  }
+  .status-toolbar button.secondary {
+    background: #fff;
+    color: #2c7a3e;
+    border: 1px solid #2c7a3e;
+  }
+  .status-toolbar .sync-indicator {
+    margin-left: auto;
+    font-size: 12px;
+    color: #888;
+  }
+  .status-toolbar .sync-indicator.saving { color: #e67e22; }
+  .status-toolbar .sync-indicator.error { color: #c0392b; }
+  .status-table-wrap {
+    overflow-x: auto;
+    border: 1px solid #e3e3e3;
+    border-radius: 6px;
+  }
+  table.status-table {
+    border-collapse: collapse;
+    width: 100%;
+    font-size: 13px;
+    min-width: 1600px;
+  }
+  table.status-table th, table.status-table td {
+    border: 1px solid #e3e3e3;
+    padding: 6px 8px;
+    text-align: left;
+    vertical-align: middle;
+  }
+  table.status-table th {
+    background: #f0f7f2;
+    color: #2c7a3e;
+    font-weight: 600;
+    position: sticky;
+    top: 0;
+    z-index: 1;
+  }
+  table.status-table td input[type="text"],
+  table.status-table td select {
+    width: 100%;
+    border: 1px solid #d0d0d0;
+    padding: 5px 7px;
+    background: #fff;
+    font-size: 13px;
+    font-family: inherit;
+    border-radius: 3px;
+    min-height: 28px;
+  }
+  table.status-table td input[type="text"]:focus,
+  table.status-table td select:focus {
+    outline: none;
+    border-color: #2c7a3e;
+    background: #fffef8;
+    box-shadow: 0 0 0 2px rgba(44,122,62,0.15);
+  }
+  table.status-table td input[type="text"]:hover,
+  table.status-table td select:hover {
+    border-color: #2c7a3e;
+  }
+  table.status-table td input[type="checkbox"] {
+    transform: scale(1.3);
+    cursor: pointer;
+  }
+  table.status-table td.center { text-align: center; }
+  table.status-table td.delete-cell {
+    text-align: center;
+  }
+  table.status-table td .delete-btn {
+    background: #fdecea;
+    color: #c0392b;
+    border: none;
+    padding: 4px 8px;
+    border-radius: 3px;
+    cursor: pointer;
+    font-size: 12px;
+  }
+  .status-config {
+    background: #fff8e1;
+    border: 1px solid #ffd54f;
+    padding: 12px 16px;
+    border-radius: 5px;
+    margin-bottom: 16px;
+    font-size: 13px;
+    color: #856404;
+  }
+  .status-config code {
+    background: #fff;
+    padding: 2px 6px;
+    border-radius: 3px;
+    font-size: 12px;
+  }
+
+  .filter-bar {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+    background: #f0f7f2;
+    padding: 10px 14px;
+    border-radius: 6px;
+    margin-bottom: 12px;
+  }
+  .filter-bar .filter-label {
+    font-size: 13px;
+    font-weight: 600;
+    color: #2c7a3e;
+  }
+  .filter-bar select, .filter-bar input[type="text"] {
+    border: 1px solid #c8d6cd;
+    background: #fff;
+    padding: 6px 10px;
+    border-radius: 4px;
+    font-size: 13px;
+    font-family: inherit;
+  }
+  .filter-bar input[type="text"] { min-width: 160px; }
+  .filter-count {
+    margin-left: auto;
+    font-size: 12px;
+    color: #666;
+  }
+
+  /* select 색상 차별화 */
+  select.s-contact-컨택완료 { background: #d4edda !important; }
+  select.s-contact-부재 { background: #fff3cd !important; }
+  select.s-contact-재연락필요 { background: #f8d7da !important; }
+  select.s-progress-진행 { background: #d4edda !important; }
+  select.s-progress-보류 { background: #fff3cd !important; }
+  select.s-progress-거절 { background: #f8d7da !important; }
+</style>
+</head>
+<body>
+<div class="container">
+
+<header>
+  <h1>캠핏 체험 — 캠핑장 안내 통합 자료</h1>
+  <div class="meta">영업팀 유선 안내 전용 · 6월 체험부터 진행 · 작성일 2026-04-15</div>
+</header>
+
+<div class="tabs">
+  <button class="tab-btn active" data-tab="guide">📋 안내자료</button>
+  <button class="tab-btn" data-tab="status">📊 캠핑장 현황</button>
+</div>
+
+<div class="tab-pane active" id="pane-guide">
+
+<nav class="toc">
+  <strong>목차</strong>
+  <ul>
+    <li><a href="#part1">PART 1. 안내 스크립트 (유선용)</a></li>
+    <li><a href="#part2">PART 2. FAQ (자주 묻는 질문)</a></li>
+  </ul>
+</nav>
+
+<!-- PART 1 -->
+<h2 id="part1">PART 1. 안내 스크립트 (유선용)</h2>
+
+<h3>[1] 도입 인사</h3>
+<div class="script-block">"안녕하세요, 캠지기님.
+캠핏 어드민을 통해 체험 프로그램을 신청해 주셔서 연락드렸습니다.
+통화 가능하실까요?"</div>
+
+<h3>[2] 체험 서비스 브리핑</h3>
+
+<h4>▶ 캠핏 체험이란?</h4>
+<div class="script-block">"캠핏 체험은 캠핑장 사이트 예약율을 올리는 것을 목적으로 진행하는 프로그램입니다.
+
+체험 프로그램은 숲체험, 이동식 동물원, 향수 만들기, 목공예 등 <strong>60여 가지</strong>가 운영되고 있고, 강사·공급사는 캠핏에서 직접 미팅을 통해 엄선된 분들이 진행해 주십니다.
+
+캠지기님께서는 <strong>장소 제공 + 간단한 홍보·안내</strong> 정도만 부탁드리고 있습니다.
+
+진행 방식은 간단합니다.
+강사님들께서 가능한 일정을 오픈해 두시면, 캠지기님께서 프로그램과 일정을 보시고 신청만 해주시면 됩니다.
+강사님께서 해당 일정에 수락하시면 캠핑장에 자동으로 매칭되는 시스템입니다."</div>
+
+<h4>▶ 수익 구조</h4>
+<div class="script-block">"체험은 진행 시점 기준 <strong>1주일 전에 최소인원 예약 여부</strong>에 따라 진행 확정 여부를 안내드리고 있습니다.
+
+최소인원이라는 건 캠핏에서 강사님께 지급해야 하는 수업료를 기준으로 설정된 손익분기 인원입니다.
+- 최소인원 <strong>미달</strong> → 취소 처리
+- 최소인원 <strong>충족</strong> → 정상 진행
+
+그리고 최소인원을 넘긴 이후의 예약 건부터 수익이 발생하는데, <strong>해당 수익의 30%를 캠핑장 측에 셰어</strong>해 드리고 있습니다."</div>
+
+<h4>▶ 분담금 제도 안내 <span class="badge">톤 중요</span></h4>
+<div class="script-block">"먼저 말씀드리고 싶은 부분이 있습니다.
+
+<strong>캠핏 체험은 지금 굉장히 잘 운영되고 있습니다.</strong>
+- 체험을 도입한 캠핑장은 <strong>숙박 예약률이 눈에 띄게 올라가고 있고</strong>
+- 캠퍼분들이 '체험이 있는 캠핑장'을 보고 숙박을 결정하시는 경우가 많아졌습니다.
+
+원래 캠핑장에서 직접 체험을 진행하시려면 강사 섭외에 회당 <strong>수십만 원</strong>이 들어가는데, 캠핏을 통하면 저희가 강사 풀과 운영을 다 끼고 가서 <strong>캠지기님 부담은 거의 없이</strong> 캠퍼들에게 좋은 경험을 제공해 드리고 있습니다.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+다만 한 가지 현실적인 부분이 있습니다.
+
+<strong>현재 캠핏이 보유한 체험은 약 60개인 반면, 체험을 원하시는 캠핑장 수가 더 많은 상황</strong>입니다. 모든 캠핑장에 다 매칭해 드리지 못하는 게 현실이라 저희도 안타깝습니다.
+
+그래서 이미 많은 캠지기님들께서 <strong>최소인원이 살짝 모자랄 때 5~10만 원 정도를 분담</strong>해서 체험을 진행해 달라고 적극 요청을 주고 계십니다.
+(어차피 캠퍼들이 체험 보고 추가로 숙박 예약을 잡는 경우가 많아서, 캠핑장 입장에서도 충분히 남는 장사라고 판단해 주시는 것 같습니다.)
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+여쭙고 싶은 부분은, <strong>캠지기님께서는 분담금으로 얼마까지 부담이 가능하실까요?</strong>
+(금액은 캠지기님 사정에 맞게 자율적으로 말씀해 주시면 됩니다. 보통 5~10만 원 선에서 협조해 주십니다.)
+
+분담금 지원이 어려우시더라도 진행이 불가한 것은 아니지만, <strong>분담금을 지원해 주시는 캠핑장 위주로 우선 체험 매칭을 진행</strong>할 예정이니 양해 부탁드립니다.
+
+물론 자연스럽게 최소인원이 충족되는 경우에는 분담금 없이 진행되며, <strong>모든 체험에 적용되는 조건이 아니라 인원이 딱 그만큼 모자랐을 때만</strong> 말씀드리는 부분입니다."</div>
+
+<h3>[3] 체크사항 (계약 전 확인)</h3>
+<ul class="checklist">
+  <li><strong>사업자등록증 확인</strong> (캠지기 어드민)</li>
+  <li><strong>실내 공간</strong> — 약 20명 정도 수용 가능한 실내 공간이 있으신가요? (우천 시 진행 공간)<br>※ 실내 공간이 없으시면 다른 캠지기님들은 <strong>캐노피 텐트 2동 정도를 구비</strong>해서 진행하고 계십니다. 이후 수익 셰어로 충분히 커버되는 수준이라 많이들 선택하고 계세요.</li>
+  <li><strong>테이블·의자</strong> — 체험 진행 시 사용할 테이블과 의자 준비가 가능하신가요?</li>
+  <li><strong>진행 가능 시점</strong> — 6월 체험 신청건부터 매칭이 가능합니다. 괜찮으실까요?</li>
+  <li><strong>분담금 부담 가능 금액</strong> — 최소인원 미달 시 분담금으로 얼마까지 부담 가능하신가요? (미지원 시 우선순위에서 밀릴 수 있음)</li>
+  <li><strong>MOQ 운영 룰</strong> — 체험 7일 전(D-7)에 진행 여부가 결정됩니다.<br>※ 간혹 체험이 취소되면 캠핑장 예약도 함께 취소를 요청하시는 캠퍼분이 계실 수 있다는 점 인지 부탁드립니다.</li>
+</ul>
+
+<h3>[4] 클로징</h3>
+
+<h4>▶ 동의하신 경우</h4>
+<div class="script-block">"감사합니다. 계약서 진행을 위해 <strong>핸드폰 번호 또는 메일 주소</strong>를 요청드립니다.
+또한 <strong>사업자 대표 본인인증이 가능한 핸드폰 번호</strong>도 함께 확인 부탁드립니다."</div>
+
+<h4>▶ 보류·검토 요청</h4>
+<div class="script-block">"네, 충분히 고민해 보시고 연락 주세요."</div>
+
+<h4>▶ 거절</h4>
+<div class="script-block">"네, 알겠습니다. 추후에 다시 관심 있으시면 언제든 연락 주세요. 감사합니다."</div>
+
+
+<!-- PART 2 -->
+<h2 id="part2">PART 2. FAQ (자주 묻는 질문)</h2>
+
+<h3>수익·정산</h3>
+
+<div class="qa">
+  <div class="q">Q1. 수익은 언제 어떻게 정산되나요?</div>
+  <div class="a"><strong>월 정산</strong>입니다.
+당월에 진행된 체험 수익을 합산하여 <strong>익월 10일에 정산</strong>해 드립니다.</div>
+</div>
+
+<div class="qa">
+  <div class="q">Q2. 세금계산서는 어떻게 처리하나요?</div>
+  <div class="a">캠핑장에서 30% 수익 셰어를 받으신 후, <strong>캠핏 앞으로 세금계산서를 발행</strong>해 주셔야 합니다.</div>
+</div>
+
+<div class="qa">
+  <div class="q">Q3. 30% 외에 추가 비용이 발생하나요?</div>
+  <div class="a">별도 입금·사입 비용은 없습니다. 다만 최소인원이 살짝 모자란 경우, 체험 성사를 위해 사전에 협의된 분담금이 발생할 수 있습니다.</div>
+</div>
+
+<div class="qa">
+  <div class="q">Q4. 수익 셰어율(30%) 협상 가능한가요? <span class="badge badge-no">협상 불가</span></div>
+  <div class="a">죄송하지만 30%는 모든 캠핑장 동일 적용으로, 협상이 불가합니다.</div>
+</div>
+
+<h3>최소인원 / 분담금</h3>
+
+<div class="qa">
+  <div class="q">Q5. 최소인원은 몇 명인가요?</div>
+  <div class="a">보통 <strong>10~14명</strong> 선입니다. 체험 종류·공급사별로 차이가 있으며, <strong>캠지기 어드민에서 신청하실 때 체험별 최소인원을 확인하실 수 있습니다.</strong></div>
+</div>
+
+<div class="qa">
+  <div class="q">Q6. 분담금은 항상 발생하나요?</div>
+  <div class="a">아닙니다. 대부분의 체험은 최소인원이 충족되어 정상 진행됩니다.
+분담금은 인원이 살짝 모자란 경우에 한해 체험 성사를 위해 요청드리는 제도이며, 모든 체험에 적용되는 조건이 아닙니다.</div>
+</div>
+
+<div class="qa">
+  <div class="q">Q7. 분담금은 왜 필요한가요?</div>
+  <div class="a">인원이 살짝 모자란 경우 그냥 취소하면 캠퍼분들 실망과 일정 무산이 아쉬워서, 캠핑장과 캠핏이 함께 일부 부담해 체험을 살리고 캠퍼들에게 좋은 경험을 드리려는 목적입니다.</div>
+</div>
+
+<div class="qa">
+  <div class="q">Q8. 분담금 금액은 어떻게 정해지나요?</div>
+  <div class="a">정해진 고정 금액은 없으며, <strong>캠지기님께서 부담 가능하신 금액</strong>을 자율적으로 말씀해 주시면 됩니다. 해당 금액 범위 내에서 운영됩니다.</div>
+</div>
+
+<div class="qa">
+  <div class="q">Q9. 분담금 지원이 어려우면 진행 못 하나요?</div>
+  <div class="a">진행이 불가한 것은 아닙니다. 다만 신청 캠핑장이 많다 보니, <strong>분담금 지원이 어려운 경우 매칭 우선순위에서 밀릴 수 있는 점</strong> 양해 부탁드립니다.</div>
+</div>
+
+<h3>운영 / 현장</h3>
+
+<div class="qa">
+  <div class="q">Q10. 캠핑장이 준비해야 하는 게 정확히 뭔가요?</div>
+  <div class="a">1) 약 20명 수용 가능한 실내 공간 (우천 대비)<br>
+2) 테이블·의자<br>
+3) 캠지기님의 사전 안내 및 현장 협조</div>
+</div>
+
+<div class="qa">
+  <div class="q">Q11. 우천 시 어떻게 진행되나요?</div>
+  <div class="a">캠핑장 내 실내 공간에서 강사가 대체 진행합니다. 진행 여부는 강사 재량으로 결정됩니다.</div>
+</div>
+
+<div class="qa">
+  <div class="q">Q12. 체험 진행 시간·장소는 어떻게 안내되나요?</div>
+  <div class="a">캠핏에서 캠퍼님들께 체험 7일 전 확정 안내를 드립니다.
+체험이 확정되면 캠지기님께서는 체험 공급사(강사)와 직접 컨택하셔서 정확한 장소와 일정 조율만 해주시면 됩니다.</div>
+</div>
+
+<h3>고객 환불 / 클레임</h3>
+
+<div class="qa">
+  <div class="q">Q13. 체험 보러 예약한 고객이 체험 취소되면 캠핑장 환불도 해줘야 하나요?</div>
+  <div class="a">일반적인 환불은 <strong>캠핑장 자체 환불 규정</strong>에 따라 처리됩니다.
+다만 <strong>최소인원 부족으로 체험이 취소되는 경우</strong>에는 <strong>100% 환불</strong>로 진행되며, 기준 기간은 <strong>7일</strong>입니다. 이 부분은 인지 부탁드립니다.
+(작년 11월부터 운영해본 결과 누적 2~3건 수준으로 거의 발생하지 않습니다.)</div>
+</div>
+
+<div class="qa">
+  <div class="q">Q14. 강사 또는 체험 진행 관련 항의가 들어오면?</div>
+  <div class="a"><strong>체험 완료 후 캠핏으로 안내해 주시면</strong>, 캠핏과 공급사 측에서 함께 확인하여 처리합니다. 캠지기님께서 직접 응대하실 필요 없습니다.</div>
+</div>
+
+<h3>일정 / 매칭</h3>
+
+<div class="qa">
+  <div class="q">Q15. 이전에 매칭이 마감되었다고 안내받았는데, 다시 진행 가능한가요?</div>
+  <div class="a">네. 이전 차수에는 안정적인 운영과 높은 퀄리티 유지를 위해 매칭을 마감했었습니다.
+이번에 <strong>6월 차수부터 신규 매칭을 다시 오픈</strong>하면서, 먼저 신청해 주신 캠지기님께 우선적으로 안내를 드리고 있습니다.</div>
+</div>
+
+<div class="qa">
+  <div class="q">Q16. 언제부터 진행 가능한가요?</div>
+  <div class="a"><strong>4월 20일</strong>에 <strong>6월 체험 일정 매칭</strong>을 진행할 예정입니다.</div>
+</div>
+
+<div class="qa">
+  <div class="q">Q17. 매칭은 어떻게 진행되나요?</div>
+  <div class="a">1) 공급사(강사)께서 가용 일정을 등록<br>
+2) 캠지기님께서 어드민에서 체험과 일정을 보시고 신청<br>
+3) 공급사가 해당 신청을 <strong>수락 또는 거절</strong><br>
+4) 수락되는 경우 <strong>자동 매칭</strong> 완료<br><br>
+위 순서로 진행됩니다.</div>
+</div>
+
+<h3>기타</h3>
+
+<div class="qa">
+  <div class="q">Q18. 계약서 조항을 일부 수정할 수 있나요? <span class="badge badge-no">불가</span></div>
+  <div class="a">죄송하지만 표준 계약서 조항은 수정이 불가합니다. 모든 캠핑장에 동일한 조건으로 진행됩니다.</div>
+</div>
+
+
+</div><!-- /pane-guide -->
+
+<div class="tab-pane" id="pane-status">
+  <div class="status-config" id="status-config">
+    ⚠️ <strong>설정 필요:</strong> 본 페이지를 사용하려면 GAS 웹앱 URL을 <code>GAS_URL</code> 변수에 입력해야 합니다. (index.html 하단 스크립트 참조)
+  </div>
+
+  <div class="status-toolbar">
+    <button id="btn-add">＋ 행 추가</button>
+    <button id="btn-refresh" class="secondary">🔄 새로고침</button>
+    <button id="btn-export" class="secondary">📥 CSV 내보내기</button>
+    <span class="sync-indicator" id="sync-indicator">대기중</span>
+  </div>
+
+  <div class="filter-bar">
+    <span class="filter-label">🔍 필터:</span>
+    <select id="filter-manager"><option value="">담당자 (전체)</option></select>
+    <select id="filter-contact">
+      <option value="">컨택현황 (전체)</option>
+      <option value="미컨택">미컨택</option>
+      <option value="컨택완료">컨택완료</option>
+      <option value="부재">부재</option>
+      <option value="재연락필요">재연락필요</option>
+    </select>
+    <select id="filter-progress">
+      <option value="">진행여부 (전체)</option>
+      <option value="미정">미정</option>
+      <option value="진행">진행</option>
+      <option value="보류">보류</option>
+      <option value="거절">거절</option>
+    </select>
+    <input type="text" id="filter-camp" placeholder="캠핑장명 검색...">
+    <button id="filter-reset" class="secondary">초기화</button>
+    <span id="filter-count" class="filter-count"></span>
+  </div>
+
+  <div class="status-table-wrap">
+    <table class="status-table" id="status-table">
+      <thead>
+        <tr>
+          <th style="min-width:160px">캠핑장명</th>
+          <th style="min-width:90px">담당자</th>
+          <th style="min-width:110px">컨택현황</th>
+          <th style="min-width:90px">진행여부</th>
+          <th style="min-width:130px">연락처</th>
+          <th style="min-width:110px">분담금<br>금액</th>
+          <th style="min-width:60px">사업자<br>등록증</th>
+          <th style="min-width:60px">실내<br>공간</th>
+          <th style="min-width:60px">테이블</th>
+          <th style="min-width:50px">의자</th>
+          <th style="min-width:80px">7일취소<br>동의</th>
+          <th style="min-width:90px">계약방식</th>
+          <th style="min-width:180px">연락처/메일</th>
+          <th style="min-width:70px">계약서<br>발송</th>
+          <th style="min-width:70px">계약<br>완료</th>
+          <th style="min-width:200px">비고</th>
+          <th style="min-width:60px"></th>
+        </tr>
+      </thead>
+      <tbody id="status-tbody"></tbody>
+    </table>
+  </div>
+</div><!-- /pane-status -->
+
+<footer>
+  © 2026 캠핏 체험팀 — 영업팀 내부 자료
+</footer>
+
+</div>
+
+<script>
+// ===== 설정 =====
+const GAS_URL = 'https://script.google.com/macros/s/AKfycby-edtiknjqULJobte4i_ayYdAobgjFGwLNbiBTi8jDNzrLKb3t6cP8mdnPvQO8qow2/exec';
+
+// ===== 컬럼 정의 =====
+const COLUMNS = [
+  { key: 'campName',       type: 'text', readonly: true },
+  { key: 'manager',        type: 'text' },
+  { key: 'contactStatus',  type: 'select', options: ['미컨택','컨택완료','부재','재연락필요'], cls: 's-contact-' },
+  { key: 'progressStatus', type: 'select', options: ['미정','진행','보류','거절'], cls: 's-progress-' },
+  { key: 'phone',          type: 'text' },
+  { key: 'subsidyAmount',  type: 'text' },
+  { key: 'bizCert',        type: 'check' },
+  { key: 'indoor',         type: 'check' },
+  { key: 'table',          type: 'check' },
+  { key: 'chair',          type: 'check' },
+  { key: 'cancelAgree',    type: 'check' },
+  { key: 'contractMethod', type: 'select', options: ['','휴대폰','메일'] },
+  { key: 'contractContact',type: 'text' },
+  { key: 'contractSent',   type: 'check' },
+  { key: 'contractDone',   type: 'check' },
+  { key: 'note',           type: 'text' }
+];
+
+// ===== 탭 전환 =====
+document.querySelectorAll('.tab-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    document.querySelectorAll('.tab-pane').forEach(p => p.classList.remove('active'));
+    btn.classList.add('active');
+    const tab = btn.dataset.tab;
+    document.getElementById('pane-' + tab).classList.add('active');
+    document.body.classList.toggle('wide-mode', tab === 'status');
+    if (tab === 'status') loadRows();
+  });
+});
+
+// ===== 동기화 인디케이터 =====
+const indicator = document.getElementById('sync-indicator');
+function setStatus(text, cls) {
+  indicator.textContent = text;
+  indicator.className = 'sync-indicator ' + (cls || '');
+}
+
+// ===== GAS 호출 =====
+async function gasGet() {
+  const res = await fetch(GAS_URL + '?ts=' + Date.now());
+  return res.json();
+}
+async function gasPost(payload) {
+  const res = await fetch(GAS_URL, {
+    method: 'POST',
+    headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+    body: JSON.stringify(payload)
+  });
+  return res.json();
+}
+
+// ===== 행 렌더링 =====
+function makeCell(col, value, rowId) {
+  const td = document.createElement('td');
+  if (col.type === 'check') {
+    td.className = 'center';
+    const cb = document.createElement('input');
+    cb.type = 'checkbox';
+    cb.checked = !!value;
+    cb.addEventListener('change', () => updateField(rowId, col.key, cb.checked));
+    td.appendChild(cb);
+  } else if (col.type === 'select') {
+    const sel = document.createElement('select');
+    col.options.forEach(opt => {
+      const o = document.createElement('option');
+      o.value = opt; o.textContent = opt || '-';
+      if (String(value) === opt) o.selected = true;
+      sel.appendChild(o);
+    });
+    if (col.cls) sel.className = col.cls + (value || '');
+    sel.addEventListener('change', () => {
+      updateField(rowId, col.key, sel.value);
+      if (col.cls) sel.className = col.cls + sel.value;
+    });
+    td.appendChild(sel);
+  } else {
+    const inp = document.createElement('input');
+    inp.type = 'text';
+    inp.value = value == null ? '' : value;
+    if (col.readonly) {
+      inp.readOnly = true;
+      inp.style.background = '#f5f5f5';
+      inp.style.cursor = 'default';
+    } else {
+      let timer;
+      inp.addEventListener('input', () => {
+        clearTimeout(timer);
+        setStatus('편집 중...', 'saving');
+        timer = setTimeout(() => updateField(rowId, col.key, inp.value), 600);
+      });
+    }
+    td.appendChild(inp);
+  }
+  return td;
+}
+
+function renderRow(row) {
+  const tr = document.createElement('tr');
+  tr.dataset.id = row.id;
+  COLUMNS.forEach(col => tr.appendChild(makeCell(col, row[col.key], row.id)));
+  const delTd = document.createElement('td');
+  delTd.className = 'delete-cell';
+  const delBtn = document.createElement('button');
+  delBtn.className = 'delete-btn';
+  delBtn.textContent = '삭제';
+  delBtn.addEventListener('click', () => {
+    if (confirm('이 행을 삭제하시겠습니까?')) deleteRow(row.id);
+  });
+  delTd.appendChild(delBtn);
+  tr.appendChild(delTd);
+  return tr;
+}
+
+// ===== CRUD =====
+async function loadRows() {
+  if (GAS_URL === 'GAS_URL_HERE') {
+    setStatus('GAS URL 미설정', 'error');
+    return;
+  }
+  document.getElementById('status-config').style.display = 'none';
+  setStatus('불러오는 중...', 'saving');
+  try {
+    const res = await gasGet();
+    if (!res.ok) throw new Error(res.error);
+    const tbody = document.getElementById('status-tbody');
+    tbody.innerHTML = '';
+    res.rows.forEach(row => tbody.appendChild(renderRow(row)));
+    populateManagerFilter(res.rows);
+    applyFilters();
+    setStatus('동기화됨 · ' + new Date().toLocaleTimeString());
+  } catch (e) {
+    setStatus('오류: ' + e.message, 'error');
+  }
+}
+
+function populateManagerFilter(rows) {
+  const sel = document.getElementById('filter-manager');
+  const current = sel.value;
+  const managers = [...new Set(rows.map(r => r.manager).filter(m => m))].sort();
+  sel.innerHTML = '<option value="">담당자 (전체)</option>' +
+    managers.map(m => `<option value="${m}">${m}</option>`).join('');
+  sel.value = current;
+}
+
+function applyFilters() {
+  const m = document.getElementById('filter-manager').value;
+  const c = document.getElementById('filter-contact').value;
+  const p = document.getElementById('filter-progress').value;
+  const camp = document.getElementById('filter-camp').value.trim().toLowerCase();
+  const trs = [...document.querySelectorAll('#status-tbody tr')];
+  let visible = 0;
+  trs.forEach(tr => {
+    const cells = tr.children;
+    const campVal = (cells[0].querySelector('input')?.value || '').toLowerCase();
+    const mgrVal = cells[1].querySelector('input')?.value || '';
+    const contactVal = cells[2].querySelector('select')?.value || '';
+    const progressVal = cells[3].querySelector('select')?.value || '';
+    const ok = (!m || mgrVal === m)
+      && (!c || contactVal === c)
+      && (!p || progressVal === p)
+      && (!camp || campVal.includes(camp));
+    tr.style.display = ok ? '' : 'none';
+    if (ok) visible++;
+  });
+  document.getElementById('filter-count').textContent =
+    `${visible} / ${trs.length} 행`;
+}
+
+async function addRow() {
+  if (GAS_URL === 'GAS_URL_HERE') { alert('GAS URL을 먼저 설정해주세요'); return; }
+  setStatus('추가 중...', 'saving');
+  const data = {};
+  COLUMNS.forEach(c => data[c.key] = c.type === 'check' ? false : (c.options ? c.options[0] : ''));
+  try {
+    const res = await gasPost({ action: 'add', data });
+    if (!res.ok) throw new Error(res.error);
+    await loadRows();
+  } catch (e) {
+    setStatus('오류: ' + e.message, 'error');
+  }
+}
+
+async function updateField(id, field, value) {
+  setStatus('저장 중...', 'saving');
+  try {
+    const res = await gasPost({ action: 'update', id, field, value });
+    if (!res.ok) throw new Error(res.error);
+    setStatus('저장됨 · ' + new Date().toLocaleTimeString());
+  } catch (e) {
+    setStatus('저장 실패: ' + e.message, 'error');
+  }
+}
+
+async function deleteRow(id) {
+  setStatus('삭제 중...', 'saving');
+  try {
+    const res = await gasPost({ action: 'delete', id });
+    if (!res.ok) throw new Error(res.error);
+    await loadRows();
+  } catch (e) {
+    setStatus('오류: ' + e.message, 'error');
+  }
+}
+
+// ===== CSV 내보내기 =====
+function exportCSV() {
+  const rows = [...document.querySelectorAll('#status-tbody tr')];
+  const headers = ['캠핑장명','담당자','컨택현황','진행여부','연락처','분담금금액','사업자등록증','실내공간','테이블','의자','7일취소동의','계약방식','연락처/메일','계약서발송','계약완료','비고'];
+  const data = [headers];
+  rows.forEach(tr => {
+    const cells = [];
+    COLUMNS.forEach((col, i) => {
+      const td = tr.children[i];
+      let v = '';
+      const inp = td.querySelector('input,select');
+      if (inp) {
+        if (inp.type === 'checkbox') v = inp.checked ? 'O' : '';
+        else v = inp.value;
+      }
+      cells.push('"' + String(v).replace(/"/g,'""') + '"');
+    });
+    data.push(cells);
+  });
+  const csv = '\uFEFF' + data.map(r => r.join(',')).join('\n');
+  const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = '캠핑장현황_' + new Date().toISOString().slice(0,10) + '.csv';
+  a.click();
+}
+
+document.getElementById('btn-add').addEventListener('click', addRow);
+document.getElementById('btn-refresh').addEventListener('click', loadRows);
+document.getElementById('btn-export').addEventListener('click', exportCSV);
+
+// 필터 이벤트
+['filter-manager','filter-contact','filter-progress'].forEach(id => {
+  document.getElementById(id).addEventListener('change', applyFilters);
+});
+document.getElementById('filter-camp').addEventListener('input', applyFilters);
+document.getElementById('filter-reset').addEventListener('click', () => {
+  document.getElementById('filter-manager').value = '';
+  document.getElementById('filter-contact').value = '';
+  document.getElementById('filter-progress').value = '';
+  document.getElementById('filter-camp').value = '';
+  applyFilters();
+});
+
+// 30초마다 자동 새로고침 (현황 탭이 열려 있을 때만)
+setInterval(() => {
+  if (document.getElementById('pane-status').classList.contains('active')) {
+    loadRows();
+  }
+}, 30000);
+</script>
+</body>
+</html>
